@@ -1,7 +1,7 @@
 // Globala konstanter och variabler
 var boardElem;			// Referens till div-element för "spelplanen"
-const carImgs = ["car_up.png","car_right.png","car_down.png","car_left.png"];
-						// Array med filnamn för bilderna med bilen
+const carImgs = ["car_up.png", "car_right.png", "car_down.png", "car_left.png"];
+// Array med filnamn för bilderna med bilen
 var carDir = 1;			// Riktning för bilen, index till carImgs
 var carElem;			// Referens till img-element för bilen
 const xStep = 5;		// Antal pixlar som bilen ska förflytta sig i x-led
@@ -11,29 +11,35 @@ var timerRef = null;	// Referens till timern för bilens förflyttning
 var startBtn;			// Referens till startknappen
 var stopBtn;			// Referens till stoppknappen
 /* === Tillägg i uppgiften === */
-
+let hogCounterElem;
+let hogCounter;
+let hitCounterElem;
+let hitCounter;
+let hogElem;
 
 // ------------------------------
 // Initiera globala variabler och koppla funktion till knapp
 function init() {
 	// Referenser till element i gränssnittet
-		boardElem = document.getElementById("board");
-		carElem = document.getElementById("car");
-		startBtn = document.getElementById("startBtn");
-		stopBtn = document.getElementById("stopBtn");
+	boardElem = document.getElementById("board");
+	carElem = document.getElementById("car");
+	startBtn = document.getElementById("startBtn");
+	stopBtn = document.getElementById("stopBtn");
 	// Lägg på händelsehanterare
-		document.addEventListener("keydown",checkKey);
-			// Känna av om användaren trycker på tangenter för att styra bilen
-		startBtn.addEventListener("click",startGame);
-		stopBtn.addEventListener("click",stopGame);
+	document.addEventListener("keydown", checkKey);
+	// Känna av om användaren trycker på tangenter för att styra bilen
+	startBtn.addEventListener("click", startGame);
+	stopBtn.addEventListener("click", stopGame);
 	// Aktivera/inaktivera knappar
-		startBtn.disabled = false;
-		stopBtn.disabled = true;
+	startBtn.disabled = false;
+	stopBtn.disabled = true;
 	/* === Tillägg i uppgiften === */
-	
+	hogElem = document.getElementById("pig");
+	hogCounterElem = document.getElementById("pigNr");
+	hitCounterElem = document.getElementById("hitCounter");
 
 } // End init
-window.addEventListener("load",init);
+window.addEventListener("load", init);
 // ------------------------------
 // Kontrollera tangenter och styr bilen
 function checkKey(e) {
@@ -56,6 +62,7 @@ function checkKey(e) {
 // ------------------------------
 // Initiera spelet och starta bilens rörelse
 function startGame() {
+	console.log("start")
 	startBtn.disabled = true;
 	stopBtn.disabled = false;
 	carElem.style.left = "0px";
@@ -64,7 +71,7 @@ function startGame() {
 	carElem.src = "img/" + carImgs[carDir];
 	moveCar();
 	/* === Tillägg i uppgiften === */
-	
+	setTimeout(placeHog, 2000);
 
 } // End startGame
 // ------------------------------
@@ -74,7 +81,7 @@ function stopGame() {
 	startBtn.disabled = false;
 	stopBtn.disabled = true;
 	/* === Tillägg i uppgiften === */
-	
+
 
 } // End stopGame
 // ------------------------------
@@ -104,12 +111,51 @@ function moveCar() {
 	}
 	carElem.style.left = x + "px";
 	carElem.style.top = y + "px";
-	timerRef = setTimeout(moveCar,timerStep);
+	timerRef = setTimeout(moveCar, timerStep);
 	/* === Tillägg i uppgiften === */
-	
+
 
 } // End moveCar
 // ------------------------------
 
 /* === Tillägg av nya funktioner i uppgiften === */
+
+hogCounter = 0
+function placeHog() {
+	console.log("place hog")
+	let randomTop = Math.floor(Math.random() * 450);
+	let randomLeft = Math.floor(Math.random() * 830)
+	console.log("place hog")
+
+	hogElem.style.top = randomTop + "px";
+	hogElem.style.left = randomLeft + "px";
+	hogElem.style.visibility = "visible";
+	hogCounter++;
+	hogCounterElem.innerHTML = hogCounter;
+	console.log("place hog");
+
+	setInterval(() => {
+
+		while (hogCounter < 9) {
+			console.log("while");
+			setTimeout(hogplacer(), 2000);
+			hogCounter++;
+		}
+
+	}, 2000)
+}
+
+function hogplacer() {
+	console.log("Hogplace trigger");
+	hogElem.style.visibility = "hidden";
+	let randomTop = Math.floor(Math.random() * 450);
+	let randomLeft = Math.floor(Math.random() * 830);
+
+	hogElem.style.top = randomTop + "px";
+	hogElem.style.left = randomLeft + "px";
+	hogElem.style.visibility = "visible";
+	hogCounter++;
+	hogCounterElem.innerHTML = hogCounter;
+
+}
 
