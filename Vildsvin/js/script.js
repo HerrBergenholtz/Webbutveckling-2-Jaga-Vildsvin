@@ -11,8 +11,9 @@ var timerRef = null;	// Referens till timern för bilens förflyttning
 var startBtn;			// Referens till startknappen
 var stopBtn;			// Referens till stoppknappen
 /* === Tillägg i uppgiften === */
+let running = false;
 let hogCounterElem;
-let hogCounter;
+let hogCounter = 0;
 let hitCounterElem;
 let hitCounter;
 let hogElem;
@@ -71,7 +72,8 @@ function startGame() {
 	carElem.src = "img/" + carImgs[carDir];
 	moveCar();
 	/* === Tillägg i uppgiften === */
-	setTimeout(placeHog, 2000);
+	running = true;
+	setTimeout(hogplacer, 2000);
 
 } // End startGame
 // ------------------------------
@@ -81,7 +83,8 @@ function stopGame() {
 	startBtn.disabled = false;
 	stopBtn.disabled = true;
 	/* === Tillägg i uppgiften === */
-
+	hogCounter = 0;
+	hogCounterElem.innerHTML = hogCounter;
 
 } // End stopGame
 // ------------------------------
@@ -118,44 +121,23 @@ function moveCar() {
 } // End moveCar
 // ------------------------------
 
-/* === Tillägg av nya funktioner i uppgiften === */
-
-hogCounter = 0
-function placeHog() {
-	console.log("place hog")
-	let randomTop = Math.floor(Math.random() * 450);
-	let randomLeft = Math.floor(Math.random() * 830)
-	console.log("place hog")
-
-	hogElem.style.top = randomTop + "px";
-	hogElem.style.left = randomLeft + "px";
-	hogElem.style.visibility = "visible";
-	hogCounter++;
-	hogCounterElem.innerHTML = hogCounter;
-	console.log("place hog");
-
-	setInterval(() => {
-
-		while (hogCounter < 9) {
-			console.log("while");
-			setTimeout(hogplacer(), 2000);
-			hogCounter++;
-		}
-
-	}, 2000)
+async function hogplacer() {
+	while (hogCounter < 10 && running) {
+		await sussa(500);
+		hogElem.style.visibility = "hidden";
+		
+		let randomTop = Math.floor(Math.random() * 450);
+		let randomLeft = Math.floor(Math.random() * 830);
+		
+		hogElem.style.top = randomTop + "px";
+		hogElem.style.left = randomLeft + "px";
+		hogElem.style.visibility = "visible";
+		hogCounter++;
+		hogCounterElem.innerHTML = hogCounter;
+	}
+	running = false;
 }
 
-function hogplacer() {
-	console.log("Hogplace trigger");
-	hogElem.style.visibility = "hidden";
-	let randomTop = Math.floor(Math.random() * 450);
-	let randomLeft = Math.floor(Math.random() * 830);
-
-	hogElem.style.top = randomTop + "px";
-	hogElem.style.left = randomLeft + "px";
-	hogElem.style.visibility = "visible";
-	hogCounter++;
-	hogCounterElem.innerHTML = hogCounter;
-
+async function sussa(sött) {
+	return new Promise ((resolve) => setTimeout(resolve, sött));
 }
-
