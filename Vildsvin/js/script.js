@@ -73,6 +73,7 @@ function startGame() {
 	moveCar();
 	/* === Tillägg i uppgiften === */
 	running = true;
+	hogCounter = 0;
 	setTimeout(hogplacer, 2000);
 
 } // End startGame
@@ -83,8 +84,8 @@ function stopGame() {
 	startBtn.disabled = false;
 	stopBtn.disabled = true;
 	/* === Tillägg i uppgiften === */
-	hogCounter = 0;
 	hogCounterElem.innerHTML = hogCounter;
+	running = false;
 
 } // End stopGame
 // ------------------------------
@@ -116,19 +117,18 @@ function moveCar() {
 	carElem.style.top = y + "px";
 	timerRef = setTimeout(moveCar, timerStep);
 	/* === Tillägg i uppgiften === */
-
-
+	elementsOverlap(carElem, hogElem);
 } // End moveCar
 // ------------------------------
 
 async function hogplacer() {
 	while (hogCounter < 10 && running) {
-		await sussa(500);
+		await sussa(1000);
 		hogElem.style.visibility = "hidden";
-		
+
 		let randomTop = Math.floor(Math.random() * 450);
 		let randomLeft = Math.floor(Math.random() * 830);
-		
+
 		hogElem.style.top = randomTop + "px";
 		hogElem.style.left = randomLeft + "px";
 		hogElem.style.visibility = "visible";
@@ -138,6 +138,23 @@ async function hogplacer() {
 	running = false;
 }
 
+function elementsOverlap(el1, el2) {
+	let hits = 0;
+	while (hits < 2) {
+		const domRect1 = el1.getBoundingClientRect();
+		const domRect2 = el2.getBoundingClientRect();
+
+		console.log(elementsOverlap(carElem, hogElem));
+
+		return !(
+			domRect1.top > domRect2.bottom ||
+			domRect1.right < domRect2.left ||
+			domRect1.bottom < domRect2.top ||
+			domRect1.left > domRect2.right
+		);
+	}
+}
+
 async function sussa(sött) {
-	return new Promise ((resolve) => setTimeout(resolve, sött));
+	return new Promise((resolve) => setTimeout(resolve, sött));
 }
