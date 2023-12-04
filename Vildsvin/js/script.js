@@ -139,7 +139,7 @@ async function hogPlacer() {
 		hogElem.style.left = randomLeft + "px";
 		//Efter grisen har fått sin nya position så visas den igen genom att ändra stilen.
 		hogElem.style.display = "block";
-
+		//Eftersom att smack ska visas på samma ställe som grisen när den blir träffad så placeras den också ut på samma ställe.
 		smackElem.style.top = randomTop + "px";
 		smackElem.style.left = randomLeft + "px";
 		//För varje loop så ökar vi gris räknaren.
@@ -152,7 +152,7 @@ async function hogPlacer() {
 
 //Denna funktion hanterar träffar, den anropas i movecar så den körs konstant under spelets gång.
 function checkHit(el1, el2) {
-	//Ifall grisen och bilen överlappar så kommer det att räknas till som en träff och sedan så kommer grisen att gömmas vilket också gör så att de inte överlappar längre så att det endast räknas som en träff och också eftersom att man vill byta ut grisen mot smack.
+	//Ifall grisen och bilen överlappar så kommer det att räknas som en träff och sedan så kommer grisen att gömmas vilket också gör så att de inte överlappar längre så att det endast räknas som en träff och också eftersom att man vill byta ut grisen mot smack.
 	if (elementsOverlap(el1, el2)) {
 		hitCounter++;
 		hitCounterElem.innerHTML = hitCounter;
